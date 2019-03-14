@@ -6,13 +6,14 @@ class Person {
   final String salary;
   final String address;
 
-  const Person(
-      {this.link,
-      this.image,
-      this.name,
-      this.about,
-      this.salary,
-      this.address});
+  const Person({
+    this.link,
+    this.image,
+    this.name,
+    this.about,
+    this.salary,
+    this.address,
+  });
 
   factory Person.fromJson(Map<String, dynamic> json) {
     return Person(
@@ -24,4 +25,10 @@ class Person {
       address: json['address'],
     );
   }
+
+  String get info => """
+$about
+$salary
+$address
+""";
 }

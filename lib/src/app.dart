@@ -9,6 +9,7 @@ class App extends StatelessWidget {
       title: 'FindEx',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
+        primaryColor: Colors.blueGrey,
       ),
       home: Router(),
     );
