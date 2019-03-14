@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:readbook/src/widgets/tab_data.dart';
 import 'package:readbook/src/screens/home_page.dart';
 import 'package:readbook/src/screens/messages_page.dart';
 import 'package:readbook/src/screens/navigation_page.dart';
 
 class Router extends StatefulWidget {
+  final List<TabData> _tabs = [
+    TabData(
+      icon: Icons.home,
+      title: "News",
+      widget: HomePage(),
+    ),
+    TabData(
+      icon: Icons.play_circle_filled,
+      title: "Videos",
+      widget: MessagesPage(),
+    ),
+    TabData(
+      icon: Icons.radio,
+      title: "Radio",
+      widget: NavigationPage(),
+    ),
+  ];
+
   Router({Key key}) : super(key: key);
 
   @override
@@ -11,46 +30,24 @@ class Router extends StatefulWidget {
 }
 
 class _Router extends State<Router> {
-  int _currentIndex = 0;
-  final List<String> _titleRoute = ["News", "Videos", "Radio"];
-  final List<Widget> _children = [
-    HomePage(),
-    MessagesPage(),
-    NavigationPage(),
-  ];
-  final List<IconData> _icon = [
-    Icons.home,
-    Icons.play_circle_filled,
-    Icons.radio,
-  ];
+  int _tabIndex = 0;
+
+  List<TabData> get tabs => widget._tabs;
+
+  Widget get selectedTab => tabs[_tabIndex];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: selectedTab,
       bottomNavigationBar: BottomNavigationBar(
         fixedColor: Colors.blue,
-        onTap: onSwitchRouter,
-        currentIndex: _currentIndex,
-        items: [
-          _buildItemNav(0),
-          _buildItemNav(1),
-          _buildItemNav(2),
-        ],
+        onTap: (index) => setState(() {
+              _tabIndex = index;
+            }),
+        currentIndex: _tabIndex,
+        items: tabs.map((tab) => tab.bottomBarItem).toList(),
       ),
     );
-  }
-
-  BottomNavigationBarItem _buildItemNav(int index) {
-    return BottomNavigationBarItem(
-      icon: Icon(_icon[index]),
-      title: Text(_titleRoute[index]),
-    );
-  }
-
-  void onSwitchRouter(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
   }
 }
